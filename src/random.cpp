@@ -86,18 +86,19 @@ namespace aux {
 			struct {
 				std::uint32_t operator()() const
 				{
-					static std::atomic<std::uint32_t> seed{static_cast<std::uint32_t>(duration_cast<microseconds>(
-						std::chrono::high_resolution_clock::now().time_since_epoch()).count())};
-					return seed++;
+					std::uint32_t ret;
+					crypto_random_bytes(&ret, sizeof(ret));
+					return ret;
 				}
 			} dev;
 #else
 			static std::random_device dev;
 #endif
+			static std::seed_seq seed({dev(), dev(), dev(), dev()});
 #ifdef BOOST_NO_CXX11_THREAD_LOCAL
-			static std::mt19937 rng(dev());
+			static std::mt19937 rng(seed);
 #else
-			thread_local static std::mt19937 rng(dev());
+			thread_local static std::mt19937 rng(seed);
 #endif
 #endif
 			return rng;
@@ -132,15 +133,21 @@ namespace aux {
 			dev.read(buffer);
 #else
 
+#if TORRENT_BROKEN_RANDOM_DEVICE
+			// even pseudo random numbers rely on being able to seed the random
+			// generator
+#error "no entropy source available"
+#else
 #ifdef TORRENT_I_WANT_INSECURE_RANDOM_NUMBERS
 			std::generate(buffer.begin(), buffer.end(), [] { return char(random(0xff)); });
 #else
 #error "no secure entropy source available. If you really want insecure random numbers, define TORRENT_I_WANT_INSECURE_RANDOM_NUMBERS"
 #endif
+#endif
 
 #endif
 		}
-	}
+}
 
 	std::uint32_t random(std::uint32_t const max)
 	{
