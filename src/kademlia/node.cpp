@@ -126,6 +126,7 @@ node::node(aux::listen_socket_handle const& sock, socket_manager* sock_man
 	, m_counters(cnt)
 	, m_storage(storage)
 {
+	// TODO: does this need stronger random numbers?
 	m_secret[0] = random(0xffffffff);
 	m_secret[1] = random(0xffffffff);
 }
@@ -246,6 +247,7 @@ int node::bucket_size(int bucket)
 
 void node::new_write_key()
 {
+	// TODO: does this need stronger random numbers?
 	m_secret[1] = m_secret[0];
 	m_secret[0] = random(0xffffffff);
 }
