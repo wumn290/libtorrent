@@ -57,9 +57,7 @@ extern "C" {
 }
 #include "libtorrent/aux_/disable_warnings_pop.hpp"
 
-#endif
-
-#if TORRENT_USE_DEV_RANDOM
+#elif TORRENT_USE_DEV_RANDOM
 #include "libtorrent/aux_/dev_random.hpp"
 #endif
 
