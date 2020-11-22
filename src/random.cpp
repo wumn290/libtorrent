@@ -92,10 +92,11 @@ namespace aux {
 #else
 			static std::random_device dev;
 #endif
-			static std::seed_seq seed({dev(), dev(), dev(), dev()});
 #ifdef BOOST_NO_CXX11_THREAD_LOCAL
+			static std::seed_seq seed({dev(), dev(), dev(), dev()});
 			static std::mt19937 rng(seed);
 #else
+			thread_local static std::seed_seq seed({dev(), dev(), dev(), dev()});
 			thread_local static std::mt19937 rng(seed);
 #endif
 #endif
