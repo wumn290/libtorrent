@@ -1,3 +1,4 @@
+	* fix uTP issue acking FIN packets
 
 1.2.11 released
 

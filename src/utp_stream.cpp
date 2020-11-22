@@ -1712,6 +1712,8 @@ void utp_socket_impl::remove_sack_header(packet* p)
 // send_pkt() again)
 // returns true if there is more space for payload in our
 // congestion window, false if there is no more space.
+// m_seq_nr is only incremented when sending packets with data payload. i.e. not
+// for ST_STATE or ST_FIN packets
 bool utp_socket_impl::send_pkt(int const flags)
 {
 #ifdef TORRENT_EXPENSIVE_INVARIANT_CHECKS
@@ -3338,7 +3340,10 @@ bool utp_socket_impl::incoming_packet(span<std::uint8_t const> buf
 				break;
 			}
 
-			if (m_acked_seq_nr == ((m_seq_nr - 1) & ACK_MASK))
+			// we don't increment m_seq_nr when sending a FIN, so we actually
+			// need to wait for m_acked_sen_nr to reach m_seq_nr before the FIN
+			// is considered ACKed
+			if (m_acked_seq_nr == m_seq_nr)
 			{
 				// When this happens we know that the remote side has
 				// received all of our packets.
