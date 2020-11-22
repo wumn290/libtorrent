@@ -85,7 +85,7 @@ namespace aux {
 				std::uint32_t operator()() const
 				{
 					std::uint32_t ret;
-					crypto_random_bytes(&ret, sizeof(ret));
+					crypto_random_bytes({reinterpret_cast<char*>(&ret), sizeof(ret)});
 					return ret;
 				}
 			} dev;
