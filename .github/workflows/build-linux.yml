@@ -1,0 +1,59 @@
+name: Build (Linux)
+
+on:
+   push:
+      branches: [ RC_1_2 RC_2_0 master ]
+   pull_request:
+
+jobs:
+
+   build:
+      name: build
+      runs-on: ubuntu-20.04
+
+      strategy:
+         matrix:
+            config: [ check-headers, asio-debugging=on picker-debugging=on, extensions=off logging=off streaming=off super-seeding=off share-mode=off predictive-pieces=off dht=off alert-msg=off encryption=off mutable-torrents=off deprecated-functions=off, crypto=gcrypt ]
+
+      steps:
+      - name: checkout
+        uses: actions/checkout@v2.3.3
+        with:
+           submodules: recursive
+
+      - name: install boost
+        run: |
+          sudo apt install libboost-tools-dev libboost-dev libboost-system-dev
+          echo "using gcc ;" >>~/user-config.jam
+          echo "using clang ;" >>~/user-config.jam
+
+      - name: install gcrypt
+        run: sudo apt install libgcrypt20-dev
+
+      - name: build
+        run: |
+          b2 ${{ matrix.config }} -j2
+
+
+
+   clang_tidy:
+      name: clang-tidy
+      runs-on: ubuntu-20.04
+
+      steps:
+      - name: checkout
+        uses: actions/checkout@v2.3.3
+        with:
+           submodules: recursive
+
+      - name: install clang-tidy
+        run: sudo apt install clang-tidy
+
+      - name: install boost
+        run: |
+          sudo apt install libboost-tools-dev libboost-dev
+          echo "using clang_tidy : : clang-tidy \"-checks=-clang-analyzer-core.*,-clang-analyzer-unix.*\" : <cxxflags>-std=c++11 <cxxflags>-I/usr/local/clang-7.0.0/include/c++/v1 <cxxflags>-stdlib=libc++ <linkflags>-stdlib=libc++ ;" >> ~/user-config.jam;
+
+      - name: analyze
+        run: |
+          b2 -a -j2 clang_tidy

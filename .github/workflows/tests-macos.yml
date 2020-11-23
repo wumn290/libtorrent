@@ -1,0 +1,55 @@
+name: Tests (MacOS)
+
+on:
+   push:
+      branches: [ RC_1_2 RC_2_0 master ]
+   pull_request:
+
+jobs:
+
+   test:
+      name: Tests
+      runs-on: macos-latest
+
+      strategy:
+         matrix:
+            config: [ crypto=openssl ]
+
+      steps:
+      - name: checkout
+        uses: actions/checkout@v2.3.3
+        with:
+           submodules: recursive
+
+      - name: install boost
+        run: |
+          brew install boost-build boost
+          echo "using darwin ;" >>~/user-config.jam
+
+      - name: build and run tests
+        run: |
+          cd test
+          b2 ${{ matrix.config }} -j2 -l350 debug-iterators=on invariant-checks=full asserts=on cxxstd=11
+
+
+
+   sim:
+      name: Simulations
+      runs-on: macos-latest
+
+      steps:
+      - name: checkout
+        uses: actions/checkout@v2.3.3
+        with:
+           submodules: recursive
+
+      - name: install boost
+        run: |
+          brew install boost-build boost
+          echo "using darwin ;" >>~/user-config.jam
+
+      - name: build and run simulations
+        run: |
+          cd simulation
+          b2 -j2 -l350 debug-iterators=on invariant-checks=full asserts=on cxxstd=11
+
