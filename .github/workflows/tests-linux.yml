@@ -30,7 +30,7 @@ jobs:
       - name: build and run tests
         run: |
           cd test
-          b2 ${{ matrix.config }} -j2 -l350 debug-iterators=on invariant-checks=full asserts=on picker-debugging=on
+          b2 ${{ matrix.config }} -j2 -l400 debug-iterators=on invariant-checks=full asserts=on picker-debugging=on
 
 
 
