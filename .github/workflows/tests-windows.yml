@@ -26,9 +26,9 @@ jobs:
         run: |
           set BOOST_ROOT=%BOOST_ROOT_1_72_0%
           cd %BOOST_ROOT%
+          dir
           bootstrap.bat
           set PATH=%BOOST_ROOT%:%PATH%
-          sudo apt install libboost-tools-dev libboost-dev libboost-system-dev
           echo "using msvc ;" >>%HOME%/user-config.jam
 
       - name: build and run tests
@@ -53,9 +53,9 @@ jobs:
         run: |
           set BOOST_ROOT=%BOOST_ROOT_1_72_0%
           cd %BOOST_ROOT%
+          dir
           bootstrap.bat
           set PATH=%BOOST_ROOT%:%PATH%
-          sudo apt install libboost-tools-dev libboost-dev libboost-system-dev
           echo "using msvc ;" >>%HOME%/user-config.jam
 
       - name: build and run simulations
