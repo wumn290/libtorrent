@@ -13,7 +13,7 @@ jobs:
 
       strategy:
          matrix:
-            config: [ crypto=openssl, toolset=clang, deprecated-functions=off ]
+            config: [ crypto=openssl, deprecated-functions=off ]
 
       steps:
       - name: checkout
@@ -22,10 +22,11 @@ jobs:
            submodules: recursive
 
       - name: setup boost
+        shell: cmd
         run: |
           set BOOST_ROOT=%BOOST_ROOT_1_72_0%
           cd %BOOST_ROOT%
-          bootstrap.bat >nul
+          bootstrap.bat
           set PATH=%BOOST_ROOT%:%PATH%
           sudo apt install libboost-tools-dev libboost-dev libboost-system-dev
           echo "using msvc ;" >>%HOME%/user-config.jam
@@ -48,10 +49,11 @@ jobs:
            submodules: recursive
 
       - name: setup boost
+        shell: cmd
         run: |
           set BOOST_ROOT=%BOOST_ROOT_1_72_0%
           cd %BOOST_ROOT%
-          bootstrap.bat >nul
+          bootstrap.bat
           set PATH=%BOOST_ROOT%:%PATH%
           sudo apt install libboost-tools-dev libboost-dev libboost-system-dev
           echo "using msvc ;" >>%HOME%/user-config.jam
