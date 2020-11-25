@@ -18,7 +18,7 @@ jobs:
       - name: install dependencies
         run: |
           sudo apt install python-docutils python-pygments python-pil gsfonts inkscape icoutils graphviz hunspell imagemagick
-          pip3 install aafigure
+          pip install aafigure
           aafigure --version
 
       - name: spell-check
