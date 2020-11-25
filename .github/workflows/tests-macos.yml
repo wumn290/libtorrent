@@ -29,7 +29,7 @@ jobs:
       - name: build and run tests
         run: |
           cd test
-          b2 ${{ matrix.config }} -j2 -l350 debug-iterators=on invariant-checks=full asserts=on cxxstd=11
+          b2 ${{ matrix.config }} -j2 -l400 debug-iterators=on invariant-checks=full asserts=on cxxstd=11
 
 
 
@@ -51,5 +51,5 @@ jobs:
       - name: build and run simulations
         run: |
           cd simulation
-          b2 -j2 -l350 debug-iterators=on invariant-checks=full asserts=on cxxstd=11
+          b2 -j2 -l400 debug-iterators=on invariant-checks=full asserts=on cxxstd=11
 
