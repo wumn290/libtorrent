@@ -24,13 +24,11 @@ jobs:
       - name: setup boost
         shell: cmd
         run: |
-          echo %BOOST_ROOT_1_72_0%
           set BOOST_ROOT=%BOOST_ROOT_1_72_0%
           echo %BOOST_ROOT%
-          cd
-          pushd %BOOST_ROOT%$
-          cd
-          bootstrap.bat
+          dir %BOOST_ROOT%
+          dir %BOOST_ROOT%\tools
+          dir %BOOST_ROOT%\tools\build
           set PATH=%BOOST_ROOT%:%PATH%
           echo %PATH%
           echo "using msvc ;" >>%HOME%/user-config.jam
