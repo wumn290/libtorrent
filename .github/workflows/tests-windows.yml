@@ -24,12 +24,14 @@ jobs:
       - name: configure boost-build
         shell: cmd
         run: |
-          echo "using msvc ;" >>%HOME%/user-config.jam
+          echo %HOMEPATH%
+          echo "using msvc ;" >>%HOMEPATH%/user-config.jam
 
       - name: build and run tests
         shell: cmd
         run: |
           set BOOST_ROOT=%BOOST_ROOT_1_72_0%
+          set BOOST_BUILD_PATH=%BOOST_ROOT%\tools\build
           cd test
           %BOOST_ROOT%\b2.exe ${{ matrix.config }} -j2 -l400 debug-iterators=on invariant-checks=full asserts=on picker-debugging=on
 
