@@ -24,19 +24,18 @@ jobs:
       - name: setup boost
         shell: cmd
         run: |
-          set BOOST_ROOT=%BOOST_ROOT_1_72_0%
           echo %BOOST_ROOT%
-          dir %BOOST_ROOT%
-          dir %BOOST_ROOT%\tools
-          dir %BOOST_ROOT%\tools\build
           set PATH=%BOOST_ROOT%:%PATH%
           echo %PATH%
           echo "using msvc ;" >>%HOME%/user-config.jam
 
       - name: build and run tests
+        shell: cmd
         run: |
           echo %PATH%
           echo %BOOST_ROOT%
+          set BOOST_ROOT=%BOOST_ROOT_1_72_0%
+          set PATH=%BOOST_ROOT%:%PATH%
           cd test
           b2 ${{ matrix.config }} -j2 -l400 debug-iterators=on invariant-checks=full asserts=on picker-debugging=on
 
