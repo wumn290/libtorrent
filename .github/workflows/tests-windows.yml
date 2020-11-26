@@ -25,7 +25,7 @@ jobs:
         shell: cmd
         run: |
           echo %HOMEDRIVE%%HOMEPATH%
-          echo "using msvc ;" >>%HOMEDRIVE%%%HOMEPATH%/user-config.jam
+          echo "using msvc ;" >>%HOMEDRIVE%%HOMEPATH%\user-config.jam
 
       - name: build and run tests
         shell: cmd
