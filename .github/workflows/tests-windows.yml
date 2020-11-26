@@ -24,8 +24,8 @@ jobs:
       - name: configure boost-build
         shell: cmd
         run: |
-          echo %HOMEPATH%
-          echo "using msvc ;" >>%HOMEPATH%/user-config.jam
+          echo %HOMEDRIVE%%HOMEPATH%
+          echo "using msvc ;" >>%HOMEDRIVE%%%HOMEPATH%/user-config.jam
 
       - name: build and run tests
         shell: cmd
